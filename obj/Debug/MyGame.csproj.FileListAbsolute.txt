@@ -1,0 +1,8 @@
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\bin\Debug\MyGame.exe
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\bin\Debug\MyGame.pdb
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.csprojResolveAssemblyReference.cache
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.Form1.resources
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.Properties.Resources.resources
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.csproj.GenerateResource.Cache
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.exe
+c:\users\лехап\documents\visual studio 2015\Projects\MyGame\MyGame\obj\Debug\MyGame.pdb
