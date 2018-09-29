@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -20,7 +21,8 @@ namespace MyGame
         public Form1(string[] args)
         {
             InitializeComponent();
-            if(args.Length > 0)
+
+            if (args.Length > 0)
             {
                 load(args[0]);
             }            
@@ -28,8 +30,8 @@ namespace MyGame
 
         public void load(string path)
         {
-            //123.bmp; 100; 100
-            //1234.bmp; 100; 100
+            //123.bmp; 100; 100;0005
+            //1234.bmp; 100; 100;100
 
             string game = File.ReadAllText(path).Replace("\r", "");
             foreach (var item in game.Split('\n'))
@@ -67,19 +69,40 @@ namespace MyGame
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            isDown = true;
-            //Console.WriteLine(e.Location);
+            //MessageBox.Show(((MouseButtons)e.Button).ToString());
+            if (e.Button == MouseButtons.Left)
+            {
+                isDown = true;
+                x = e.X;
+                y = e.Y;
+            }
+            if(e.Button == MouseButtons.Right)
+            {               
+               (sender as PictureBox).BringToFront();
+            }
+            if (e.Button == MouseButtons.Middle)
+            {
+                Bitmap temp = new Bitmap((sender as PictureBox).Image);
+
+                (sender as PictureBox).Image.Dispose();
+                temp.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                (sender as PictureBox).Image = temp;
+                temp = null;
+            }
         }
+
+        private int x = 0;
+        private int y = 0;
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Control c = sender as Control;
             if (isDown)
             {
-                //Console.WriteLine(e.Location);
-                Point p = Control.MousePosition;               
-                c.Location = this.PointToClient(p);
-                if(trig(sender as PictureBox, del))
+                Point pos = new Point(Cursor.Position.X - x, Cursor.Position.Y - y);
+                c.Location = PointToClient(pos);
+
+                if (trig(sender as PictureBox, del))
                 {
                     c.MouseMove -= pictureBox1_MouseMove;
                     c.MouseDown -= pictureBox1_MouseDown;
@@ -134,9 +157,11 @@ namespace MyGame
 
         private void button1_Click(object sender, EventArgs e)
         {
+            del.Visible = false;
             button1.Visible = false;        
             //Bitmap myBitmap = new Bitmap(980, 421, panel1.CreateGraphics());
             SaveFileDialog sf = new SaveFileDialog();
+            sf.Filter = "*.JPEG|*.jpg";
             if(sf.ShowDialog() == DialogResult.OK)
             {
                 int width = panel1.Size.Width;
@@ -145,9 +170,10 @@ namespace MyGame
                 Bitmap bm = new Bitmap(width, height);
                 panel1.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
 
-                bm.Save(sf.FileName, ImageFormat.Bmp);
+                bm.Save(sf.FileName, ImageFormat.Jpeg);
             }
             button1.Visible = true;
+            del.Visible = true;
         }
         public bool trig(PictureBox object1, PictureBox object2)
         {
@@ -200,6 +226,17 @@ namespace MyGame
             {
                 pictureBox17.Visible = false;
                 //panel1.Visible = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog opg = new OpenFileDialog();
+            opg.Filter = "*.SBORGAME|*.sborgame";
+            if(opg.ShowDialog() == DialogResult.OK)
+            {
+                Process.Start(Environment.CurrentDirectory + "\\" + "MyGame.exe", "\"" + opg.FileName + "\"");
+                Application.Exit();
             }
         }
     }
